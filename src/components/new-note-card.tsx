@@ -3,17 +3,16 @@ import { X } from "lucide-react";
 import { toast } from "sonner";
 import { ChangeEvent, FormEvent, useState } from "react";
 
-
 export function NewNoteCard() {
-  const [ shouldShowOnBoarding, setShouldShowOnBoarding ] = useState(true);
-  const [ content, setContent ] = useState("")
+  const [shouldShowOnBoarding, setShouldShowOnBoarding] = useState(true);
+  const [content, setContent] = useState("");
 
   function handleStartEditor() {
     setShouldShowOnBoarding(false);
   }
 
   function handleContentChanged(event: ChangeEvent<HTMLTextAreaElement>) {
-    setContent(event.target.value)
+    setContent(event.target.value);
 
     if (event.target.value === "") {
       setShouldShowOnBoarding(true);
@@ -21,10 +20,14 @@ export function NewNoteCard() {
   }
 
   function handleSaveNote(event: FormEvent) {
-    event.preventDefault()
-    console.log("Your Note was save", content);
+    try {
+      event.preventDefault();
+      console.log("Your Note was save", content);
 
-    toast.success("Nota criada com sucesso!")
+      toast.success("Nota criada com sucesso!");
+    } catch (err) {
+      toast.error("Não foi possível salvar a sua nota! Tente novamente...");
+    }
   }
 
   return (
@@ -46,7 +49,7 @@ export function NewNoteCard() {
             <X className="size-5" />
           </Dialog.Close>
 
-          <form onSubmit={handleSaveNote} className="flex-1 flex-col"> 
+          <form onSubmit={handleSaveNote} className="flex-1 flex-col">
             <div className="flex flex-1 flex-col gap-3 p-5">
               <span className="text-sm font-medium text-slate-300">
                 Adicionar nota
@@ -81,7 +84,6 @@ export function NewNoteCard() {
               Salvar nota
             </button>
           </form>
-
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
