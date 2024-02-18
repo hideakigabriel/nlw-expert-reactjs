@@ -9,6 +9,7 @@ interface NewNoteCardProps {
 
 export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
   const [shouldShowOnBoarding, setShouldShowOnBoarding] = useState(true);
+  const [isRecording, setIsRecording] = useState(false);
   const [content, setContent] = useState("");
 
   function handleStartEditor() {
@@ -24,19 +25,18 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
   }
 
   function handleSaveNote(event: FormEvent) {
+    // if (content === "") {
+    //   toast.error("Não foi possível salvar a sua nota! Tente novamente...");
 
-    if (content === "") {
-      toast.error("Não foi possível salvar a sua nota! Tente novamente...");
-
-      return  setShouldShowOnBoarding(true);
-    }
+    //   return setShouldShowOnBoarding(true);
+    // }
 
     try {
       event.preventDefault();
 
       onNoteCreated(content);
 
-      setContent("")
+      setContent("");
 
       setShouldShowOnBoarding(true);
 
@@ -44,9 +44,16 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
 
       toast.success("Nota criada com sucesso!");
     } catch (err) {
-
       toast.error("Não foi possível salvar a sua nota! Tente novamente...");
     }
+  }
+
+  function handleStartRecording() {
+    setIsRecording(true);
+  }
+  
+  function handleStopRecording() {
+    setIsRecording(false);
   }
 
   return (
@@ -68,7 +75,7 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
             <X className="size-5" />
           </Dialog.Close>
 
-          <form onSubmit={handleSaveNote} className="flex flex-1 flex-col">
+          <form className="flex flex-1 flex-col">
             <div className="flex flex-1 flex-col gap-3 p-5">
               <span className="text-sm font-medium text-slate-300">
                 Adicionar nota
@@ -76,11 +83,17 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
               {shouldShowOnBoarding ? (
                 <p className="text-sm leading-6 text-slate-400">
                   Comece{" "}
-                  <button className="font-medium text-lime-400 hover:underline">
-                    gravando uma nota
+                  <button
+                    type="button"
+                    onClick={handleStartRecording}
+                    className="font-medium text-lime-400 hover:underline"
+                  >
+                    {" "}
+                    gravando uma nota{" "}
                   </button>{" "}
                   em áudio ou se preferir{" "}
                   <button
+                    type="button"
                     onClick={handleStartEditor}
                     className="font-medium text-lime-400 hover:underline"
                   >
@@ -97,12 +110,24 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
               )}
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none rounded-md font-medium hover:bg-lime-500"
-            >
-              Salvar nota
-            </button>
+            {isRecording ? (
+              <button
+                type="button"
+                className="flex flex-row items-center justify-center gap-2 w-full bg-slate-900 py-4 text-center text-sm text-slate-300 outline-none rounded-md font-medium hover:text-slate-100"
+                onClick={handleStopRecording}
+              >
+                <div className="size-2 rounded-full bg-red-500 animate-pulse" />
+                Gravando! (clique p/ interromper)
+              </button>
+            ) : (
+              <button
+                onClick={handleSaveNote}
+                type="button"
+                className="w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none rounded-md font-medium hover:bg-lime-500"
+              >
+                Salvar nota
+              </button>
+            )}
           </form>
         </Dialog.Content>
       </Dialog.Portal>
