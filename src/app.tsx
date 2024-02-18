@@ -4,23 +4,35 @@ import { NewNoteCard } from "./components/new-note-card";
 import { NoteCard } from "./components/note-card";
 
 interface Note {
-  id: string
-  date: Date
-  content: string
+  id: string;
+  date: Date;
+  content: string;
 }
 
 export function App() {
+  const [notes, setNotes] = useState<Note[]>(() => {
+    
+    const noteOnStorage = localStorage.getItem("notes");
 
-  const [notes, setNotes] = useState<Note[]>([]);
+    if (noteOnStorage) {
+     return JSON.parse(noteOnStorage)
+    }
+
+    return [];
+  });
 
   function onNoteCreated(content: string) {
     const newNote = {
       id: crypto.randomUUID(),
       date: new Date(),
       content,
-    }
+    };
 
-    setNotes([newNote, ...notes])
+    const notesArray = [newNote, ...notes];
+
+    setNotes(notesArray);
+
+    localStorage.setItem("notes", JSON.stringify(notesArray));
   }
 
   return (
@@ -37,11 +49,10 @@ export function App() {
       <div className="h-px bg-slate-700" />
 
       <div className="grid grid-cols-3 gap-6 auto-rows-[250px]">
-
         <NewNoteCard onNoteCreated={onNoteCreated} />
 
-        {notes.map(note => {
-          return <NoteCard key={note.id} note={note} />
+        {notes.map((note) => {
+          return <NoteCard key={note.id} note={note} />;
         })}
       </div>
     </div>

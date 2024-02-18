@@ -24,16 +24,27 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
   }
 
   function handleSaveNote(event: FormEvent) {
+
+    if (content === "") {
+      toast.error("Não foi possível salvar a sua nota! Tente novamente...");
+
+      return  setShouldShowOnBoarding(true);
+    }
+
     try {
       event.preventDefault();
 
       onNoteCreated(content);
 
+      setContent("")
+
+      setShouldShowOnBoarding(true);
+
       console.log("Your Note was save", content);
 
       toast.success("Nota criada com sucesso!");
     } catch (err) {
-      
+
       toast.error("Não foi possível salvar a sua nota! Tente novamente...");
     }
   }
@@ -81,6 +92,7 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
                   autoFocus
                   className="p-2 text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none ring-1 ring-slate-500 rounded-sm"
                   onChange={handleContentChanged}
+                  value={content}
                 />
               )}
             </div>
