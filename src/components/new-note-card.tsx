@@ -1,22 +1,30 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
-import { ChangeEvent, useState } from "react";
+import { toast } from "sonner";
+import { ChangeEvent, FormEvent, useState } from "react";
+
 
 export function NewNoteCard() {
-  const [shouldShowOnBoarding, setShouldShowOnBoarding] = useState(true);
+  const [ shouldShowOnBoarding, setShouldShowOnBoarding ] = useState(true);
+  const [ content, setContent ] = useState("")
 
   function handleStartEditor() {
     setShouldShowOnBoarding(false);
   }
 
   function handleContentChanged(event: ChangeEvent<HTMLTextAreaElement>) {
+    setContent(event.target.value)
+
     if (event.target.value === "") {
       setShouldShowOnBoarding(true);
     }
   }
 
-  function handleSaveNote() {
-    console.log("Your Note was save");
+  function handleSaveNote(event: FormEvent) {
+    event.preventDefault()
+    console.log("Your Note was save", content);
+
+    toast.success("Nota criada com sucesso!")
   }
 
   return (
