@@ -25,6 +25,7 @@ export function NewNoteCard() {
       console.log("Your Note was save", content);
 
       toast.success("Nota criada com sucesso!");
+      toast.error("Não foi possível salvar a sua nota! Tente novamente...");
     } catch (err) {
       toast.error("Não foi possível salvar a sua nota! Tente novamente...");
     }
@@ -49,7 +50,7 @@ export function NewNoteCard() {
             <X className="size-5" />
           </Dialog.Close>
 
-          <form onSubmit={handleSaveNote} className="flex-1 flex-col">
+          <form onSubmit={handleSaveNote} className="flex flex-1 flex-col">
             <div className="flex flex-1 flex-col gap-3 p-5">
               <span className="text-sm font-medium text-slate-300">
                 Adicionar nota
@@ -71,7 +72,7 @@ export function NewNoteCard() {
               ) : (
                 <textarea
                   autoFocus
-                  className="text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none"
+                  className="p-2 text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none ring-1 ring-slate-500 rounded-sm"
                   onChange={handleContentChanged}
                 />
               )}
