@@ -17,18 +17,26 @@ export function NoteCard({ note, onNoteDeleted }: NoteCardProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger className="rounded-md text-left flex-col bg-slate-800 p-5 gap-3 overflow-hidden relative outline-none hover:ring-2 hover:ring-slate-600 hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-lime-400">
-          <span className="text-sm font-medium text-slate-300">
-            {formatDistanceToNow(note.date, { locale: ptBR, addSuffix: true })}
-          </span>
-          
-          <button
-            onClick={() => onNoteDeleted(note.id)}
-            type="button"
-            className="absolute top-6 right-6 group hover:opacity-[80%]"
-          >
-            <TrashIcon color="#f87171" size={18} strokeWidth={2} />
-          </button>
-  
+        <span className="text-sm font-medium text-slate-300">
+          {formatDistanceToNow(note.date, { locale: ptBR, addSuffix: true })}
+        </span>
+
+        <button
+          onClick={() => toast.message("Nota editada com sucesso!")}
+          type="button"
+          className="absolute top-6 right-14 group hover:opacity-[80%]"
+        >
+          <PencilIcon color="#a3e635" size={18} strokeWidth={2} />
+        </button>
+
+        <button
+          onClick={() => onNoteDeleted(note.id)}
+          type="button"
+          className="absolute top-6 right-6 group hover:opacity-[80%]"
+        >
+          <TrashIcon color="#f87171" size={18} strokeWidth={2} />
+        </button>
+
         <p className="text-sm leading-6 text-slate-400">{note.content}</p>
 
         <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/60 to-black/0 pointer-events-none" />
